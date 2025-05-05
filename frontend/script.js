@@ -13,7 +13,9 @@ form.addEventListener("submit", function(event){
     const message = messageInput.value.trim()
     console.log("message-->", message)
 
-    
+    if(!message || !userName){
+        validation.textContent = "Please enter both a username and a message.";
+    }
 
     if(userName && message) {
         const messageElement = document.createElement("p");
