@@ -1,10 +1,20 @@
-import express from "espress";
-
+import express from "express";
+import path from "path"; //used to serve static files
+import { fileURLToPath } from 'url';
 
 const app = express()
 
+// __dirname is not available by default in ES module scope.
+// Recreate __dirname in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from "frontend" directory
+const frontendPath = path.join(__dirname, '..', 'frontend');
+app.use(express.static(frontendPath));
+
 app.get('/', (req,res) =>{
-    res.send("Backend is running.")
+    res.sendFile(path.join(frontendPath, 'index.html'))
 })
 
 
