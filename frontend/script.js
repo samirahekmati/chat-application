@@ -7,7 +7,7 @@ const validation = document.getElementById("validation");
 // On page load: fetches and displays all messages
 function loadMessages() {
   fetch("http://localhost:3000/messages")
-    .then((res) => res.json)
+    .then((res) => res.json())
     .then((data) => {
       chatBox.innerHTML = "";
       data.forEach((message) => {
@@ -33,6 +33,24 @@ form.addEventListener("submit", function (event) {
     validation.textContent = "Please enter both a username and a message.";
     return; // stop the fetch if validation fails
   }
+
+  validation.textContent = ""; // Clear previous validation messages
+
+  const newMessage = { userName, message };
+
+  fetch('http://localhost:3000/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newMessage)
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to send message');
+      messageInput.value = ''; // Clear input
+      loadMessages(); // Refresh messages
+    })
+    .catch(err => console.error('Error sending message:', err));
 
 });
 
