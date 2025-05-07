@@ -35,7 +35,11 @@ app.post("/messages", (req, res) =>{
     
 })
 
+app.get("/messages", (req, res) =>{
+    console.log("recieved a request for messages");
+    res.json(messages);
 
+})
 
 
 app.get("/", (req, res, next) => {
