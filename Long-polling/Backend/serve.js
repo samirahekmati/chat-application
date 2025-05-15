@@ -9,6 +9,30 @@ const app = express();
 app.use(cors()); // Allow all origins (ok for local dev); so frontend can access it
 app.use(express.json()); //to parse JSON request bodies
 
+const messages = []; // store All chat messages here
+const callbacksForNewMessages = []; //Array to store callbacks waiting for new messages
+
+app.post("/messages", (req, res) => {
+  const { userName, message } = req.body;
+  console.log("recieved post request");
+
+  if (!userName || !message) {
+    return res
+      .status(400)
+      .json({ error: "Username and message are required." });
+  }
+
+  const newMessage = { userName, message };
+  messages.push(newMessage);
+
+  // Notify all waiting clients
+  while (callbacksForNewMessages.length > 0) {
+    const callback = callbacksForNewMessages.pop();
+    callback([newMessage]); // Wrap in array for consistency
+  }
+
+  res.status(201).json({ success: true, message: "Message added." });
+});
 
 
 app.get("/", (req, res, next) => {
