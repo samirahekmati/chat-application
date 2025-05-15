@@ -34,6 +34,22 @@ app.post("/messages", (req, res) => {
   res.status(201).json({ success: true, message: "Message added." });
 });
 
+app.get("/messages", (req, res) => {
+  console.log("Received a request for messages.");
+
+  const lastSeenIndex = Number(req.query.lastSeen) || 0;
+  const newMessages = messages.slice(lastSeenIndex);
+
+  if (newMessages.length === 0) {
+    // No new messages, store the callback
+    callbacksForNewMessages.push((newMsgs) => {
+      res.json(newMsgs);
+    });
+  } else {
+    // Send new messages immediately
+    res.json(newMessages);
+  }
+});
 
 app.get("/", (req, res, next) => {
   res.send("<h1>Chat Backend with Long-polling is running.</h1>");
