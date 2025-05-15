@@ -24,11 +24,9 @@ form.addEventListener("submit", function (event) {
   event.preventDefault(); // <-- IMPORTANT! Stop the form from reloading the page
 
   const userName = nameInput.value.trim();
-  console.log("user name-->", userName);
 
   const message = messageInput.value.trim();
-  console.log("message-->", message);
-
+  
   if (!message || !userName) {
     validation.textContent = "Please enter both a username and a message.";
     return; // stop the fetch if validation fails

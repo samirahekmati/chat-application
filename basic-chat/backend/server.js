@@ -49,6 +49,7 @@ app.get("/", (req, res, next) => {
 
 
 app.use(express.static(frontendPath));
+
 app.get("/index", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
   console.log("index page running");
