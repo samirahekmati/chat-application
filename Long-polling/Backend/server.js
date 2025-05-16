@@ -14,7 +14,6 @@ const callbacksForNewMessages = []; //Array to store callbacks waiting for new m
 
 app.post("/messages", (req, res) => {
   const { userName, message } = req.body;
-  console.log("recieved post request");
 
   if (!userName || !message) {
     return res
@@ -35,7 +34,6 @@ app.post("/messages", (req, res) => {
 });
 
 app.get("/messages", (req, res) => {
-  console.log("Received a request for messages.");
 
   const lastSeenIndex = Number(req.query.lastSeen) || 0;
   const newMessages = messages.slice(lastSeenIndex);
@@ -53,7 +51,6 @@ app.get("/messages", (req, res) => {
 
 app.get("/", (req, res, next) => {
   res.send("<h1>Chat Backend with Long-polling is running.</h1>");
-  console.log("Backend is running!");
 });
 
 // __dirname is not available by default in ES module scope.
@@ -71,9 +68,9 @@ app.use(express.static(frontendPath));
 
 app.get("/index", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
-  console.log("index page running");
 });
 
-app.listen(3000, () => {
-  console.log("server is listening on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`server is listening on port ${PORT}`);
 });
