@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Chat display area */
+  #chat-box {
+    flex-grow: 1;
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    max-height: 80vh;
+  }
+  
+  /* Individual message style */
+  #chat-box p {
+    margin: 0.5rem 0;
+  }
+  
+  /* Message form */
+  #chat-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+    width: 100%;
+    
+  }
+  
+  /* Inputs and button styling */
+  #chat-form input,
+  #chat-form button {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  #username-input {
+    width: 120px; /* Fixed width */
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  #message-input {
+      flex: 1; /* Allow message input to expand to fill available space */
+    min-width: 0; /* Ensures it can shrink if necessary */
+    padding: 0.5rem;
+    font-size: 1rem;
+    max-width: 100%; /* Allow it to expand fully */
+  }
+  
+  #chat-form button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
