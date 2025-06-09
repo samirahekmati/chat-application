@@ -4,6 +4,7 @@
   "main": "serve.js",
   "type": "module",
   "scripts": {
+    "build": "echo 'skipping build'",
     "start": "node server.js"
   },
   "keywords": [],
