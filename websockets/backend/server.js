@@ -14,3 +14,10 @@ const http_server = http.createServer((req, res) => {
 http_server.listen(8080, () => {
   console.log("The HTTP server is listening on port 8080");
 });
+
+// Step 2 create a Websocket server and attach it to the HTTP server
+const wbesocketServer = require('websocket').server;
+const websocket = new wbesocketServer({
+  httpServer: http_server,
+  autoAcceptConnections: false //you must call req.accept() manually to complete the handshake,or req.reject() to deny it.
+})
