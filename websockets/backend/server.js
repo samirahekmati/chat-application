@@ -38,8 +38,43 @@ http_server.listen(8080, () => {
 });
 
 // Step 2 create a Websocket server and attach it to the HTTP server
-const wbesocketServer = require("websocket").server;
-const websocket = new wbesocketServer({
+const websocketServer = require("websocket").server;
+const websocket = new websocketServer({
   httpServer: http_server,
   autoAcceptConnections: false, //you must call req.accept() manually to complete the handshake,or req.reject() to deny it.
+});
+
+websocket.on('request', (request) => {
+  // Accept the connection
+  const connection = request.accept(null, request.origin);
+
+  // Add connection to clients array
+  clients.push(connection);
+  console.log('New client connected, total clients:', clients.length);
+
+  // Handle incoming messages from this client
+  connection.on('message', (message) => {
+    if (message.type === 'utf8') {
+      console.log('Received Message:', message.utf8Data);
+
+      // Here, you can save the message to SQLite (db) and broadcast to all clients:
+      const chatMessage = message.utf8Data;
+
+      // Broadcast to all connected clients
+      clients.forEach(client => {
+        client.sendUTF(chatMessage);
+      });
+
+      // TODO: Save to db 
+    }
+  });
+
+  // Handle client disconnect
+  connection.on('close', (reasonCode, description) => {
+    // Remove client from clients array
+    const index = clients.indexOf(connection);
+    if (index !== -1) clients.splice(index, 1);
+
+    console.log('Client disconnected, total clients:', clients.length);
+  });
 });
