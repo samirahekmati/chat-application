@@ -8,7 +8,8 @@ const clients = []; // keep track of all the currently connected WebSocket clien
 
 // Step 1: create a HTTP server:
 const http_server = http.createServer((req, res) => {
-  let filePath = "./frontend" + (req.url === "/" ? "/index.html" : req.url);
+  const basePath = path.join(__dirname, "../frontend");
+  const filePath = path.join(basePath, req.url === "/" ? "index.html" : req.url);
   const ext = path.extname(filePath);
   const contentTypes = {
     ".html": "text/html",
@@ -16,6 +17,8 @@ const http_server = http.createServer((req, res) => {
     ".js": "text/javascript",
   };
 
+  console.log('Requested URL:', req.url);
+console.log('Serving file:', filePath);
   const contentType = contentTypes[ext] || "text/plain";
 
   fs.readFile(filePath, (err, data) => {
