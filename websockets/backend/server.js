@@ -3,6 +3,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const db = require("./db");
+const { saveMessage } = require('./db');
 
 const clients = []; // keep track of all the currently connected WebSocket clients.
 
@@ -59,16 +60,19 @@ websocket.on('request', (request) => {
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
       console.log('Received Message:', message.utf8Data);
-
-      // Here, you can save the message to SQLite (db) and broadcast to all clients:
-      const chatMessage = message.utf8Data;
-
+  
+      const text = message.utf8Data;
+      const [username, msg] = text.split(':').map(str => str.trim());
+  
+      // Save to DB
+      saveMessage(username, msg)
+        .then(() => console.log('Message saved to DB'))
+        .catch(err => console.error('DB error:', err));
+  
       // Broadcast to all connected clients
       clients.forEach(client => {
-        client.sendUTF(chatMessage);
+        client.sendUTF(text);
       });
-
-      // TODO: Save to db 
     }
   });
 
