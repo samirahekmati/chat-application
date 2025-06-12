@@ -1,9 +1,9 @@
-const ws = new WebSocket("ws://localhost:8080/");
+const ws = new WebSocket("wss://wkgc4c00c8kwcocksok8gco0.hosting.codeyourfuture.io/");
 
 // Function to fetch chat history from backend
 async function loadChatHistory() {
   try {
-    const response = await fetch("/messages");
+    const response = await fetch("https://wkgc4c00c8kwcocksok8gco0.hosting.codeyourfuture.io/messages");
     if (!response.ok) throw new Error("Network response was not ok");
 
     const messages = await response.json();
@@ -14,12 +14,12 @@ async function loadChatHistory() {
     chatBox.innerHTML = "";
 
     // Display all messages
-    messages.forEach(({ username, message, timestamp }) => {
+    messages.forEach(({ username, msg, timestamp }) => {
       const messageElem = document.createElement("div");
       messageElem.className = "message-box";
 
       const textElem = document.createElement("p");
-      textElem.textContent = `${username}: ${message}`;
+      textElem.textContent = `${username}: ${msg}`;
 
       const timeElem = document.createElement("span");
       const date = new Date(timestamp);
