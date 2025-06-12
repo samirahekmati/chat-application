@@ -1,8 +1,34 @@
 const ws = new WebSocket("ws://localhost:8080/");
 
-ws.onopen = () => console.log("WebSocket connected");
-ws.onerror = (err) => console.error("WebSocket error:", err);
-ws.onclose = () => console.log("WebSocket disconnected");
+// Function to fetch chat history from backend
+async function loadChatHistory() {
+    try {
+      const response = await fetch('/messages');
+      if (!response.ok) throw new Error('Network response was not ok');
+  
+      const messages = await response.json();
+  
+      const chatBox = document.getElementById('chat-box'); // your chat container element
+  
+      // Clear chat box first
+      chatBox.innerHTML = '';
+  
+      // Display all messages
+      messages.forEach(({ username, message, timestamp }) => {
+        const msgElement = document.createElement('p');
+        msgElement.textContent = `[${new Date(timestamp).toLocaleTimeString()}] ${username}: ${message}`;
+        chatBox.appendChild(msgElement);
+      });
+    } catch (error) {
+      console.error('Failed to load chat history:', error);
+    }
+  }
+  
+  // Call it once page loads
+  window.addEventListener('load', () => {
+    loadChatHistory();
+  });
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const chatBox = document.getElementById("chat-box");
