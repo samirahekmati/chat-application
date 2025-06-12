@@ -3,12 +3,28 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const db = require("./db");
-const { saveMessage } = require('./db');
+const { saveMessage, getAllMessages } = require('./db');
 
 const clients = []; // keep track of all the currently connected WebSocket clients.
 
 // Step 1: create a HTTP server:
 const http_server = http.createServer((req, res) => {
+  // Serve chat history if endpoint is /messages
+  if (req.method === "GET" && req.url === "/messages") {
+    getAllMessages()
+      .then(rows => {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(rows));
+      })
+      .catch(err => {
+        res.writeHead(500);
+        res.end("Error retrieving messages");
+        console.error(err);
+      });
+    return; // Important: Stop here if /messages is handled
+  }
+
+  // Otherwise serve frontend files (HTML, CSS, JS)
   const basePath = path.join(__dirname, "../frontend");
   const filePath = path.join(basePath, req.url === "/" ? "index.html" : req.url);
   const ext = path.extname(filePath);
@@ -18,8 +34,7 @@ const http_server = http.createServer((req, res) => {
     ".js": "text/javascript",
   };
 
-  console.log('Requested URL:', req.url);
-console.log('Serving file:', filePath);
+  
   const contentType = contentTypes[ext] || "text/plain";
 
   fs.readFile(filePath, (err, data) => {
@@ -40,6 +55,7 @@ console.log('Serving file:', filePath);
 http_server.listen(8080, () => {
   console.log("The HTTP server is listening on port 8080");
 });
+
 
 // Step 2 create a Websocket server and attach it to the HTTP server
 const websocketServer = require("websocket").server;
