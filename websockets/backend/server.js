@@ -2,7 +2,6 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-const db = require("./db");
 const { saveMessage, getAllMessages } = require("./db");
 
 const clients = []; // keep track of all the currently connected WebSocket clients.
@@ -31,11 +30,20 @@ const http_server = http.createServer((req, res) => {
   if (req.method === "GET" && req.url === "/messages") {
     getAllMessages()
       .then((rows) => {
-        res.writeHead(200, { "Content-Type": "application/json" });
+        res.writeHead(200, {
+           "Content-Type": "application/json",
+           "Access-Control-Allow-Origin": "*",   
+           "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+           "Access-Control-Allow-Headers": "Content-Type",
+          });
         res.end(JSON.stringify(rows));
       })
       .catch((err) => {
-        res.writeHead(500);
+        res.writeHead(500,{
+          "Access-Control-Allow-Origin": "*", 
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        });
         res.end("Error retrieving messages");
         console.error(err);
       });
@@ -64,7 +72,7 @@ const http_server = http.createServer((req, res) => {
     } else {
       res.writeHead(200, {
         "Content-Type": contentType,
-       // "access-control-allow-origin": "*", // Header allows any origin to access a web resource. It's a way to bypass the same-origin policy, enabling a web page to request resources from a different domain. This header is commonly used in web development for cross-origin resource sharing (CORS) scenarios
+        "access-control-allow-origin": "*", // Header allows any origin to access a web resource. It's a way to bypass the same-origin policy, enabling a web page to request resources from a different domain. This header is commonly used in web development for cross-origin resource sharing (CORS) scenarios
       });
       res.end(data);
     }
