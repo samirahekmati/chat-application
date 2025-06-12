@@ -16,4 +16,23 @@ const db = new sqlite3.Database('chat.db', (err) => {
     )
   `);
   
-  module.exports = db;
+  function saveMessage(username, message) {
+    return new Promise((resolve, reject) => {
+      db.run(
+        `INSERT INTO messages (username, message) VALUES (?, ?)`,
+        [username, message],
+        function (err) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve({ id: this.lastID });
+          }
+        }
+      );
+    });
+  }
+  module.exports = {
+    db,
+    saveMessage,
+  };
+  
