@@ -9,6 +9,12 @@ const clients = []; // keep track of all the currently connected WebSocket clien
 
 // Step 1: create a HTTP server:
 const http_server = http.createServer((req, res) => {
+  if (req.method === "GET" && req.url === "/") {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Hello from backend root!");
+    return;
+  }
+  
   // Serve chat history if endpoint is /messages
   if (req.method === "GET" && req.url === "/messages") {
     getAllMessages()
