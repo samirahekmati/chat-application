@@ -31,8 +31,19 @@ const db = new sqlite3.Database('chat.db', (err) => {
       );
     });
   }
+
+  function getAllMessages() {
+    return new Promise((resolve, reject) => {
+      db.all("SELECT * FROM messages ORDER BY id ASC", (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+  }
+
   module.exports = {
     db,
     saveMessage,
+    getAllMessages,
   };
   
