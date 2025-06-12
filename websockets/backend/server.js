@@ -79,15 +79,20 @@ websocket.on('request', (request) => {
   
       const text = message.utf8Data;
       const [username, msg] = text.split(':').map(str => str.trim());
+      const timestamp = new Date().toISOString();
   
       // Save to DB
       saveMessage(username, msg)
         .then(() => console.log('Message saved to DB'))
         .catch(err => console.error('DB error:', err));
-  
+      
+
+      
+      // Create structured message
+      const fullMessage = JSON.stringify({ username, msg, timestamp });
       // Broadcast to all connected clients
       clients.forEach(client => {
-        client.sendUTF(text);
+        client.sendUTF(fullMessage);
       });
     }
   });
