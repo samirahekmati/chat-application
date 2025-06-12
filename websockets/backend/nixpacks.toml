@@ -1,0 +1,8 @@
+[phases.setup]
+nixpkgsArchive = "https://github.com/NixOS/nixpkgs/archive/nixpkgs-23.05-darwin.tar.gz"
+
+[phases.build]
+cmds = []
+
+[phases.start]
+cmd = "node server.js"
