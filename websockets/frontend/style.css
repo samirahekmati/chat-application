@@ -5,6 +5,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
   }
   
   /* Chat display area */
@@ -15,6 +16,8 @@ body {
     overflow-y: auto;
     background-color: #f9f9f9;
     max-height: 80vh;
+    
+    
   }
   
   /* Individual message style */
@@ -47,7 +50,7 @@ body {
     font-size: 1rem;
   }
   #message-input {
-      flex: 1; /* Allow message input to expand to fill available space */
+    flex: 1; /* Allow message input to expand to fill available space */
     min-width: 0; /* Ensures it can shrink if necessary */
     padding: 0.5rem;
     font-size: 1rem;
@@ -61,3 +64,26 @@ body {
     cursor: pointer;
   }
   
+  .message-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    max-width: 80%;
+    margin: 1rem auto;
+  }
+  
+  .message-box p {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .message-box .timestamp {
+    font-size: 0.8rem;
+    color: #777;
+    display: block;
+    text-align: right;
+    
+  }
