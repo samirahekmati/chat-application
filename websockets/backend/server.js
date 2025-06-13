@@ -2,7 +2,7 @@ const express = require("express");
 const http = require("http");
 const path = require("path");
 const corsMiddleware = require("./middlewares/cors");
-const { saveMessage, getAllMessages } = require("./db");
+const { saveMessage, getAllMessages } = require("./db/db");
 const websocketServer = require("websocket").server;
 
 const app = express();
