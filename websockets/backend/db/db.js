@@ -1,7 +1,10 @@
 const sqlite3 = require('sqlite3').verbose();
+const path = require("path");
+
+const dbPath = path.join(__dirname, "chat.db"); // this assumes db.js is inside /db
 
 // Create or open the database file
-const db = new sqlite3.Database('chat.db', (err) => {
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) console.error('Could not connect to SQLite:', err);
     else console.log('Connected to SQLite database');
   });
