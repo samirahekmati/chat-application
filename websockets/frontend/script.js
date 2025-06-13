@@ -1,9 +1,9 @@
-const ws = new WebSocket("ws://localhost:8080/");
+const ws = new WebSocket("ws://https://lccw0gs4co800osk4s88s4k0.hosting.codeyourfuture.io/");
 
 // Function to fetch chat history from backend
 async function loadChatHistory() {
   try {
-    const response = await fetch("http://localhost:8080/messages");
+    const response = await fetch("https://lccw0gs4co800osk4s88s4k0.hosting.codeyourfuture.io/messages");
     if (!response.ok) throw new Error("Network response was not ok");
 
     const messages = await response.json();
