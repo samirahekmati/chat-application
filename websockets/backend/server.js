@@ -1,24 +1,19 @@
 const express = require("express");
 const http = require("http");
-const fs = require("fs");
 const path = require("path");
 const corsMiddleware = require("./middlewares/cors");
 const { saveMessage, getAllMessages } = require("./db");
+const websocketServer = require("websocket").server;
 
 const app = express();
-
-
-const clients = []; // keep track of all the currently connected WebSocket clients.
-
 
 // Before a WebSocket connection can be made, we have create a HTTP web-server that can handle the HTTP upgrade handshake process.
 const http_server = http.createServer(app);
 
-
 // Apply CORS
 app.use(corsMiddleware);
 
-// Parse JSON requests 
+// Parse JSON requests
 app.use(express.json());
 
 // Serve static frontend files
@@ -31,29 +26,28 @@ app.get("/", (req, res) => {
 });
 
 // Route: Example /messages (replace with DB logic later)
-app.get("/messages", (req, res) => {
-  res.json([{ user: "Samira", text: "Hello world" }]);
+app.get("/messages", async (req, res) => {
+  try {
+    const messages = await getAllMessages();
+    res.json(messages);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch messages" });
+  }
 });
-
-
 
 // Start http server listening on port 8080
 http_server.listen(8080, () => {
   console.log("The HTTP server is listening on port 8080");
 });
 
-
-
-
-
-
-
 // Step 2 create a Websocket server and attach it to the HTTP server
-const websocketServer = require("websocket").server;
 const websocket = new websocketServer({
   httpServer: http_server,
   autoAcceptConnections: false, //you must call req.accept() manually to complete the handshake,or req.reject() to deny it.
 });
+
+const clients = []; // keep track of all the currently connected WebSocket clients.
 
 websocket.on("request", (request) => {
   // Accept the connection
