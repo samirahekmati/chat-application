@@ -63,16 +63,16 @@ websocket.on("request", (request) => {
       console.log("Received Message:", message.utf8Data);
 
       const text = message.utf8Data;
-      const [username, msg] = text.split(":").map((str) => str.trim());
+      const [username, messageText] = text.split(":").map((str) => str.trim());
       const timestamp = new Date().toISOString();
 
       // Save to DB
-      saveMessage(username, msg)
+      saveMessage(username, messageText)
         .then(() => console.log("Message saved to DB"))
         .catch((err) => console.error("DB error:", err));
 
       // Create structured message
-      const fullMessage = JSON.stringify({ username, msg, timestamp });
+      const fullMessage = JSON.stringify({ username, message: messageText, timestamp });
       // Broadcast to all connected clients
       clients.forEach((client) => {
         client.sendUTF(fullMessage);
