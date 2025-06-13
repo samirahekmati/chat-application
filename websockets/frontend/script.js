@@ -14,12 +14,12 @@ async function loadChatHistory() {
     chatBox.innerHTML = "";
 
     // Display all messages
-    messages.forEach(({ username, msg, timestamp }) => {
+    messages.forEach(({ username, message, timestamp }) => {
       const messageElem = document.createElement("div");
       messageElem.className = "message-box";
 
       const textElem = document.createElement("p");
-      textElem.textContent = `${username}: ${msg}`;
+      textElem.textContent = `${username}: ${message}`;
 
       const timeElem = document.createElement("span");
       const date = new Date(timestamp);
@@ -52,13 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Display received messages
   ws.onmessage = (event) => {
-    const { username, msg, timestamp } = JSON.parse(event.data);
+    const { username, message, timestamp } = JSON.parse(event.data);
 
     const messageElem = document.createElement("div");
     messageElem.className = "message-box";
 
     const textElem = document.createElement("p");
-    textElem.textContent = `${username}: ${msg}`;
+    textElem.textContent = `${username}: ${message}`;
 
     const timeElem = document.createElement("span");
     const date = new Date(timestamp);
