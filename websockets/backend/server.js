@@ -1,88 +1,52 @@
-// Before a WebSocket connection can be made, we have create a HTTP web-server that can handle the HTTP upgrade handshake process.
+const express = require("express");
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const corsMiddleware = require("./middlewares/cors");
 const { saveMessage, getAllMessages } = require("./db");
+
+const app = express();
+
 
 const clients = []; // keep track of all the currently connected WebSocket clients.
 
-// Step 1: create a HTTP server:
-const http_server = http.createServer((req, res) => {
-  // Set CORS headers for all responses:
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") {
-    // Handle preflight requests quickly
-    res.writeHead(204);
-    res.end();
-    return;
-  }
+// Before a WebSocket connection can be made, we have create a HTTP web-server that can handle the HTTP upgrade handshake process.
+const http_server = http.createServer(app);
 
-  if (req.method === "GET" && req.url === "/") {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("Hello from backend root!");
-    return;
-  }
 
-  // Serve chat history if endpoint is /messages
-  if (req.method === "GET" && req.url === "/messages") {
-    getAllMessages()
-      .then((rows) => {
-        res.writeHead(200, {
-           "Content-Type": "application/json",
-           "Access-Control-Allow-Origin": "*",   
-           "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-           "Access-Control-Allow-Headers": "Content-Type",
-          });
-        res.end(JSON.stringify(rows));
-      })
-      .catch((err) => {
-        res.writeHead(500,{
-          "Access-Control-Allow-Origin": "*", 
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-        });
-        res.end("Error retrieving messages");
-        console.error(err);
-      });
-    return; // Important: Stop here if /messages is handled
-  }
+// Apply CORS
+app.use(corsMiddleware);
 
-  // Otherwise serve frontend files (HTML, CSS, JS)
-  const basePath = path.join(__dirname, "../frontend");
-  const filePath = path.join(
-    basePath,
-    req.url === "/" ? "index.html" : req.url
-  );
-  const ext = path.extname(filePath);
-  const contentTypes = {
-    ".html": "text/html",
-    ".css": "text/css",
-    ".js": "text/javascript",
-  };
+// Parse JSON requests 
+app.use(express.json());
 
-  const contentType = contentTypes[ext] || "text/plain";
+// Serve static frontend files
+const frontendPath = path.join(__dirname, "../frontend");
+app.use(express.static(frontendPath));
 
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      res.writeHead(404);
-      res.end("404 Not Found");
-    } else {
-      res.writeHead(200, {
-        "Content-Type": contentType,
-        "access-control-allow-origin": "*", // Header allows any origin to access a web resource. It's a way to bypass the same-origin policy, enabling a web page to request resources from a different domain. This header is commonly used in web development for cross-origin resource sharing (CORS) scenarios
-      });
-      res.end(data);
-    }
-  });
+// Route: Root
+app.get("/", (req, res) => {
+  res.send("Hello from Express backend!");
 });
+
+// Route: Example /messages (replace with DB logic later)
+app.get("/messages", (req, res) => {
+  res.json([{ user: "Samira", text: "Hello world" }]);
+});
+
+
 
 // Start http server listening on port 8080
 http_server.listen(8080, () => {
   console.log("The HTTP server is listening on port 8080");
 });
+
+
+
+
+
+
 
 // Step 2 create a Websocket server and attach it to the HTTP server
 const websocketServer = require("websocket").server;
