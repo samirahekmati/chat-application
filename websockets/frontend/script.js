@@ -1,4 +1,4 @@
-const ws = new WebSocket("ws://https://lccw0gs4co800osk4s88s4k0.hosting.codeyourfuture.io/");
+const ws = new WebSocket("wss://lccw0gs4co800osk4s88s4k0.hosting.codeyourfuture.io/");
 
 // Function to fetch chat history from backend
 async function loadChatHistory() {
