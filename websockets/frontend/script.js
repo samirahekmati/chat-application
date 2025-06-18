@@ -77,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Send message on form submit
   chatForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log("Submit handler called"); // for debugging
     const username = usernameInput.value.trim();
     const message = messageInput.value.trim();
     if (!username || !message) return;
