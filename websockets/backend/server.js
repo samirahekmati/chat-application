@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 const path = require("path");
-const corsMiddleware = require("./middlewares/cors");
+const corsMiddleware = require("./middlewares/cors");//Custom CORS handler to allow frontend requests
 const { saveMessage, getAllMessages } = require("./db/db");
 const websocketServer = require("websocket").server;
 
@@ -10,7 +10,7 @@ const app = express();
 // Before a WebSocket connection can be made, we have create a HTTP web-server that can handle the HTTP upgrade handshake process.
 const http_server = http.createServer(app);
 
-// Apply CORS
+// Apply CORS so frontend can talk to backend.
 app.use(corsMiddleware);
 
 // Parse JSON requests
@@ -25,10 +25,10 @@ app.get("/", (req, res) => {
   res.send("Hello from Express backend!");
 });
 
-// Route: Example /messages (replace with DB logic later)
+// Route: Example /messages 
 app.get("/messages", async (req, res) => {
   try {
-    const messages = await getAllMessages();
+    const messages = await getAllMessages();//Returns all messages from the DB to show chat history
     res.json(messages);
   } catch (err) {
     console.error(err);
@@ -63,6 +63,7 @@ websocket.on("request", (request) => {
       console.log("Received Message:", message.utf8Data);
 
       const text = message.utf8Data;
+      //split a message like "Samira: Hello" into two parts
       const [username, messageText] = text.split(":").map((str) => str.trim());
       const timestamp = new Date().toISOString();
 
@@ -74,6 +75,7 @@ websocket.on("request", (request) => {
       // Create structured message
       const fullMessage = JSON.stringify({ username, message: messageText, timestamp });
       // Broadcast to all connected clients
+      //The frontend listens to these messages via the ws.onmessage handler to update the UI live.d
       clients.forEach((client) => {
         client.sendUTF(fullMessage);
       });
@@ -84,7 +86,7 @@ websocket.on("request", (request) => {
   connection.on("close", (reasonCode, description) => {
     // Remove client from clients array
     const index = clients.indexOf(connection);
-    if (index !== -1) clients.splice(index, 1);
+    if (index !== -1) clients.splice(index, 1);// if the connection is not found removes that connection from the clients array using
 
     console.log("Client disconnected, total clients:", clients.length);
   });
