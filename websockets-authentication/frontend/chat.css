@@ -1,0 +1,92 @@
+/* chat.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #chatContainer {
+    max-width: 600px;
+    margin: 50px auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+  }
+  
+  header {
+    background-color: #4f46e5;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #chatBox {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+  
+  #messages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #messages li {
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    max-width: 70%;
+    word-wrap: break-word;
+  }
+  
+  #messages li.own {
+    background: #d1fae5;
+    align-self: flex-end;
+    margin-left: auto;
+  }
+  
+  #messageForm {
+    display: flex;
+    border-top: 1px solid #ccc;
+  }
+  
+  #messageInput {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    border-top-left-radius: 8px;
+  }
+  
+  button[type="submit"] {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    padding: 0 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border-top-right-radius: 8px;
+  }
+  
+  #logoutBtn {
+    background: #f87171;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
