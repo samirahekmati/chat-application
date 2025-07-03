@@ -44,7 +44,7 @@ export const loginUser = async (req, res) => {
     if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
     // Create JWT token
-    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, email: user.email, username: user.username }, JWT_SECRET, {
       expiresIn: "1h",
     });
 
