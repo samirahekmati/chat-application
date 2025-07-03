@@ -18,13 +18,19 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
     if (res.ok) {
       document.getElementById("loginMessage").textContent = "Login successful!";
+      // Save to localStorage
       localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Redirect to chat
+      window.location.href = "chat.html";
     } else {
       document.getElementById("loginMessage").textContent = data.message || "Login failed";
     }
   } catch (err) {
     document.getElementById("loginMessage").textContent = "Something went wrong";
   }
+ 
 });
 
 // Handle Register
