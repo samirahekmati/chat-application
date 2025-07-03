@@ -1,0 +1,54 @@
+const backendURL = "http://localhost:3000/api/auth";
+
+// Handle Login
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  try {
+    const res = await fetch(`${backendURL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      document.getElementById("loginMessage").textContent = "Login successful!";
+      localStorage.setItem("token", data.token);
+    } else {
+      document.getElementById("loginMessage").textContent = data.message || "Login failed";
+    }
+  } catch (err) {
+    document.getElementById("loginMessage").textContent = "Something went wrong";
+  }
+});
+
+// Handle Register
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const username = document.getElementById('register-username').value;
+  const email = document.getElementById("registerEmail").value;
+  const password = document.getElementById("registerPassword").value;
+
+  try {
+    const res = await fetch(`${backendURL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      document.getElementById("registerMessage").textContent = "Registration successful!";
+    } else {
+      document.getElementById("registerMessage").textContent = data.message || "Registration failed";
+    }
+  } catch (err) {
+    document.getElementById("registerMessage").textContent = "Something went wrong";
+  }
+});
