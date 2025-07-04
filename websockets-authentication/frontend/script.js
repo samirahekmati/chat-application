@@ -51,6 +51,10 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
 
     if (res.ok) {
       document.getElementById("registerMessage").textContent = "Registration successful!";
+      // Clear the input fields
+      document.getElementById('register-username').value = "";
+      document.getElementById("registerEmail").value = "";
+      document.getElementById("registerPassword").value = "";
     } else {
       document.getElementById("registerMessage").textContent = data.message || "Registration failed";
     }
