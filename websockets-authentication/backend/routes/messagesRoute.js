@@ -3,7 +3,7 @@ import Message from "../models/message.js";
 
 const router = express.Router();
 
-// GET /api/messages - fetch all previous messages (or you can paginate later)
+// GET /api/messages - fetch all previous messages
 router.get("/", async (req, res) => {
   try {
     const messages = await Message.find().sort({ timestamp: 1 }); // oldest first
