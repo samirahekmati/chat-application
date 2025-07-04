@@ -6,6 +6,7 @@ import messageRoutes from "./routes/messagesRoute.js";
 import cors from "cors";
 import http from "http";
 import {Server} from "socket.io";
+import Message from './models/Message.js';
 
 
 
@@ -43,9 +44,23 @@ io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
 
   // Listen for incoming chat messages from clients
-  socket.on("message", (msg) => {
-    // Broadcast received message to all connected clients
-    io.emit("message", msg);
+  socket.on("message", async (msg) => {
+    try {
+      // Create new message document
+      const message = new Message({
+        username: msg.username,
+        text: msg.text,
+        timestamp: new Date(),
+      });
+
+      // Save message to DB
+      const savedMessage = await message.save();
+
+      // Broadcast saved message (including DB-generated fields like _id, timestamp)
+      io.emit("message", savedMessage);
+    } catch (error) {
+      console.error("Error saving message:", error);
+    }
   });
 
   socket.on("disconnect", () => {
