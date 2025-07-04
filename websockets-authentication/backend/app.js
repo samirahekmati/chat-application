@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./db/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import messageRoutes from "./routes/messagesRoute.js";
 import cors from "cors";
 import http from "http";
 import {Server} from "socket.io";
@@ -22,10 +23,10 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 
-
+app.use("/api/messages", messageRoutes);
 
 app.get("/test", (req, res) => {
-    res.send("Server is working");
+    res.send("Server and DB are working working");
   });
 
 // Create HTTP server & bind Socket.IO
