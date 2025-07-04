@@ -15,7 +15,7 @@ const messageSchema = new mongoose.Schema({
   },
 });
 
-// The collection name will be 'messages'
-const Message = mongoose.model("Message", messageSchema);
 
-export default Message;
+
+// Use existing model if already compiled, or compile it if not
+export default mongoose.models.Message || mongoose.model("Message", messageSchema);
