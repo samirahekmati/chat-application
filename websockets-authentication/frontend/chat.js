@@ -38,7 +38,11 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-
+// update welcome  message
+const usernameDisplay = document.getElementById("usernameDisplay");
+if (usernameDisplay && user) {
+  usernameDisplay.textContent = user.username;
+}
 
 
 // Handle incoming messages
