@@ -23,6 +23,24 @@ function addMessage(msg, isOwn) {
   messagesList.scrollTop = messagesList.scrollHeight;
 }
 
+// Load past messages on page load from REST API
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const res = await fetch(`${backendURL}/api/messages`);
+    if (!res.ok) throw new Error("Failed to fetch messages");
+    const messages = await res.json();
+
+    messages.forEach(msg => {
+      addMessage(msg, msg.username === user.username);
+    });
+  } catch (err) {
+    console.error("Could not load past messages:", err);
+  }
+});
+
+
+
+
 // Handle incoming messages
 socket.on("message", (msg) => {
   addMessage(msg, msg.username === user.username);
