@@ -1,4 +1,4 @@
-const backendURL = "http://localhost:3000"; 
+const backendURL = "https://n0co04s04kw48cwgcccccs00.hosting.codeyourfuture.io"; 
 const socket = io(backendURL);
 
 const messageForm = document.getElementById("messageForm");

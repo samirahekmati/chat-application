@@ -1,4 +1,4 @@
-const backendURL = "http://localhost:3000/api/auth";
+const backendURL = "https://n0co04s04kw48cwgcccccs00.hosting.codeyourfuture.io/api/auth";
 
 // Handle Login
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
