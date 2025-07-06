@@ -28,6 +28,40 @@ function addMessage(msg, isOwn) {
     : "";
   timeElem.className = "timestamp";
 
+  console.log("Attempting to delete message with ID:", msg._id);
+  //  If it's your own message, add delete button
+  if (isOwn) {
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.className = "delete-btn";
+    deleteBtn.onclick = async () => {
+      const confirmed = confirm("Delete this message?");
+      if (!confirmed) return;
+      
+      try {
+        const res = await fetch(`${backendURL}/api/messages/${msg._id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.ok) {
+          li.remove(); // remove from UI
+        } else {
+          alert("Failed to delete message.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error deleting message.");
+      }
+    };
+
+    li.appendChild(deleteBtn);
+  }
+
+
+
  
   messagesList.appendChild(li);
   li.appendChild(timeElem)
