@@ -30,6 +30,10 @@ app.get("/test", (req, res) => {
     res.send("Server and DB are working working");
   });
 
+  app.get('/', (req, res) => {
+    res.send('Welcome! Server is running.');
+  });
+
 // Create HTTP server & bind Socket.IO
 const server = http.createServer(app);
 const io = new Server(server, {
