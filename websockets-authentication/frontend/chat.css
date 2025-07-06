@@ -134,3 +134,20 @@ header h2 {
 #messageForm button:hover {
   background-color: #357abd;
 }
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: rgb(205, 129, 129);
+  margin-top: 9px;
+  margin-left: 30px;
+  cursor: pointer;
+  float: right;
+}
+
+.timestamp {
+  float: right;
+  font-size: 0.8em;
+  color: #666;
+  margin-left: 10px;
+}
