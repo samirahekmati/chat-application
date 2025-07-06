@@ -34,7 +34,7 @@ export const deleteMessage = async (req, res) => {
   const currentUsername = req.user?.username; // comes from verifyToken
 
 
-
+  console.log("DELETE request received for ID:", messageId);
 
   try {
     const message = await Message.findById(messageId);
